@@ -138,7 +138,7 @@ const Repo: React.FC = () => {
                         placeholder="input search text"
                         value={value}
                         onChange={onSearch}
-                        style={{ width: 200 }}
+                        style={{ width: 200, marginBottom: '1rem' }}
                         allowClear
                     />
                     {/* Build in pagination from Antd library */}
@@ -147,6 +147,7 @@ const Repo: React.FC = () => {
                         rowKey="id"
                         dataSource={userDataOnPage}
                         columns={columns}
+                        style={{ marginBottom: '1rem' }}
                     />
                     <Pagination
                         showPrev={CUR_PAGE === 1}
