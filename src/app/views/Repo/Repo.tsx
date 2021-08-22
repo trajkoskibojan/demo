@@ -3,6 +3,7 @@ import { Col, Divider, Row, Table } from 'antd';
 import { gql, useQuery } from '@apollo/client';
 import { columns } from './RepoConstants';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import ErrorMessage from '../../components/ErrorMessage';
 
 interface IUserData {
     name: string;
@@ -59,11 +60,16 @@ const Repo: React.FC = () => {
     if (loading) {
         return <LoadingSpinner />;
     }
+    if (error) {
+        return <ErrorMessage />;
+    }
     return (
         <>
             <Divider orientation="center">Bojan GitHub Repositories</Divider>
             <Row>
                 <Col span={16} offset={4}>
+                    {/* Build in pagination from Antd library */}
+                    {/* <Table dataSource={userDataOnPage} columns={columns} pagination={{ defaultPageSize: 6 }} /> */}
                     <Table
                         rowKey="id"
                         dataSource={userDataOnPage}
