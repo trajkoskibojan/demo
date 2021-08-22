@@ -11,7 +11,7 @@ const client = new ApolloClient({
     headers: {
         Authorization: `Bearer ${
             process.env.REACT_APP_TOKEN ||
-            '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'
+            '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'
         } `,
     },
     cache: new InMemoryCache(),
