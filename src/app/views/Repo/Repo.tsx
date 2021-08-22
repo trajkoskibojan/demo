@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col, Divider, Row, Table } from 'antd';
+import { Col, Divider, Input, Row, Table } from 'antd';
 import { gql, useQuery } from '@apollo/client';
 import { columns } from './RepoConstants';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -17,6 +17,8 @@ interface IUserData {
 interface INode {
     node: IUserData;
 }
+
+type event = React.ChangeEvent<HTMLInputElement>;
 
 const getRepo = gql`
     query myOrgRepos($user: String!, $first: Int) {
@@ -42,6 +44,8 @@ const Repo: React.FC = () => {
     const [initialData, setInitialData] = React.useState<IUserData[]>([]);
     const [userData, setUserData] = React.useState<IUserData[]>([]);
     const [userDataOnPage, setUserDataOnPage] = React.useState<IUserData[]>([]);
+    const [value, setValue] = React.useState<string>('');
+    const { Search } = Input;
 
     const { loading, error, data } = useQuery(getRepo, {
         variables: { user: 'org:trajkoskibojan', first: 21 },
@@ -60,6 +64,21 @@ const Repo: React.FC = () => {
         setUserData(updateData);
         setInitialData(updateData);
     }, [data]);
+
+    // search implementation for all properties
+    React.useEffect(() => {
+        const properties = ['id', 'name', 'description', 'url'];
+        const filterData = initialData.filter((e: any) => {
+            return properties.find((propertie: string) => {
+                return (
+                    e[propertie] &&
+                    e[propertie].toLowerCase().includes(value.toLowerCase())
+                );
+            });
+        });
+
+        setUserData(filterData);
+    }, [value, initialData]);
 
     // set user data accordingly to the clicked paggination
     const handleUsers = (page: number): void => {
@@ -81,6 +100,10 @@ const Repo: React.FC = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userData]);
+
+    const onSearch = (e: event): void => {
+        setValue(e.target.value);
+    };
 
     const page = Math.ceil(userData.length / 6);
 
@@ -111,6 +134,13 @@ const Repo: React.FC = () => {
             <Divider orientation="center">Bojan GitHub Repositories</Divider>
             <Row>
                 <Col span={16} offset={4}>
+                    <Search
+                        placeholder="input search text"
+                        value={value}
+                        onChange={onSearch}
+                        style={{ width: 200 }}
+                        allowClear
+                    />
                     {/* Build in pagination from Antd library */}
                     {/* <Table dataSource={userDataOnPage} columns={columns} pagination={{ defaultPageSize: 6 }} /> */}
                     <Table
