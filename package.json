@@ -48,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.15.0",
     "@types/enzyme": "^3.10.9",
     "@types/node": "^12.20.19",
     "@types/react": "^17.0.16",
