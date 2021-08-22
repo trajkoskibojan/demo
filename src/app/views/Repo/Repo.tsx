@@ -1,6 +1,7 @@
-import { gql, useQuery } from '@apollo/client';
-import { Col, Divider, Row } from 'antd';
 import * as React from 'react';
+import { Col, Divider, Row, Table } from 'antd';
+import { gql, useQuery } from '@apollo/client';
+import { columns } from './RepoConstants';
 
 interface IUserData {
     name: string;
@@ -33,6 +34,8 @@ const getRepo = gql`
 const Repo: React.FC = () => {
     const [initialData, setInitialData] = React.useState<IUserData[]>([]);
     const [userData, setUserData] = React.useState<IUserData[]>([]);
+    const [userDataOnPage, setUserDataOnPage] = React.useState<IUserData[]>([]);
+
     const { loading, error, data } = useQuery(getRepo, {
         variables: { user: 'org:trajkoskibojan', first: 21 },
     });
@@ -49,13 +52,18 @@ const Repo: React.FC = () => {
         console.log(updateData);
         setUserData(updateData);
         setInitialData(updateData);
+        setUserDataOnPage(updateData);
     }, [data]);
     return (
         <>
             <Divider orientation="center">Bojan GitHub Repositories</Divider>
             <Row>
                 <Col span={16} offset={4}>
-                    hello
+                    <Table
+                        rowKey="id"
+                        dataSource={userDataOnPage}
+                        columns={columns}
+                    />
                 </Col>
             </Row>
         </>
