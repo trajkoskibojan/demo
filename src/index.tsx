@@ -7,12 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import { BASE_URL } from './app/api/APIEndpoint';
 
 const client = new ApolloClient({
-    uri: BASE_URL || 'https://api.github.com/graphql',
+    uri: BASE_URL,
     headers: {
-        Authorization: `Bearer ${
-            process.env.REACT_APP_TOKEN ||
-            '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'
-        } `,
+        Authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
     },
     cache: new InMemoryCache(),
 });
