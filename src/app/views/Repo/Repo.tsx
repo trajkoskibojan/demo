@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Col, Divider, Row, Table } from 'antd';
 import { gql, useQuery } from '@apollo/client';
 import { columns } from './RepoConstants';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 interface IUserData {
     name: string;
@@ -54,6 +55,10 @@ const Repo: React.FC = () => {
         setInitialData(updateData);
         setUserDataOnPage(updateData);
     }, [data]);
+
+    if (loading) {
+        return <LoadingSpinner />;
+    }
     return (
         <>
             <Divider orientation="center">Bojan GitHub Repositories</Divider>
